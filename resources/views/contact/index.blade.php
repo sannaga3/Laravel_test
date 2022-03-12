@@ -17,6 +17,16 @@
                     {{ __('this is index page!') }}
                     <br>
                     <a href="{{ route('contact.create') }}" class="btn btn-primary mt-2">お問合せ作成</a>
+                    <form method="GET" action="{{ route('contact.index') }}" class="input-group mt-4">
+                        <input class="form-control mr-sm-2" name="search" type="search" placeholder="キーワードで検索" aria-label="Search" value="@if (isset($search)) {{ $search }} @endif">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">検索</button>
+                    </form>
+                    <!-- <div class="input-group mt-3">
+                        <input type="text" id="txt-search" class="form-control input-group-prepend" placeholder="キーワードを入力"></input>
+                        <span class="input-group-btn input-group-append">
+                            <submit type="submit" id="btn-search" class="btn btn-primary"><i class="fas fa-search"></i> 検索</submit>
+                        </span>
+                    </div> -->
                     <div class="mt-5">
                         <table class="table table-striped">
                             <thead>
@@ -42,6 +52,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $contacts->appends(request()->input())->links() }}
                     </div>
                 </div>
             </div>

@@ -16,9 +16,10 @@ use GuzzleHttp\Middleware;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+//     // redirect('contact/index');
+// });
 
 Route::get('tests/test', [TestController::class, 'index']);
 // Route::resource('contacts', ContactFormController::class)->only(['index', 'show']);
@@ -35,4 +36,4 @@ Route::group(['prefix' => 'contact', 'middleware' => 'auth'], function() {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

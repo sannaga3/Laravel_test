@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ContactForm;
+use App\Services\CheckFormData;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreContactForm;
 
 class ContactFormController extends Controller
 {
@@ -13,15 +15,30 @@ class ContactFormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // $contacts = ContactForm::all();
-        $contacts = DB::table('contact_forms')
-        ->select('id', 'name', 'title', 'contact', 'created_at')
-        ->orderBy('id', 'desc')
-        ->get();
+        $search = $request->input('search');
+        $query = DB::table('contact_forms');
 
-        return view('contact.index', compact('contacts'));
+        if($search !== null) {
+            $search_split = mb_convert_kana($search, 's'); // 全角スペースを半角にする
+            $search_split2 = preg_split('/[\s]/', $search_split, -1, PREG_SPLIT_NO_EMPTY); // 文字列を空白で区切る
+            foreach($search_split2 as $name_element) {
+                $query->where('name', 'like', '%' . $name_element . '%');
+            }
+        }
+        $contacts = $query->select('id', 'name', 'title', 'contact', 'created_at')
+        ->orderBy('id', 'desc')
+        ->paginate(10);
+
+        // $contacts = ContactForm::all();
+
+        // $contacts = DB::table('contact_forms')
+        // ->select('id', 'name', 'title', 'contact', 'created_at')
+        // ->orderBy('id', 'desc')
+        // ->paginate(10);
+
+        return view('contact.index', compact('contacts', 'search'));
     }
 
     /**
@@ -40,7 +57,7 @@ class ContactFormController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreContactForm $request)
     {
         $contact = new ContactForm;
 
@@ -66,34 +83,8 @@ class ContactFormController extends Controller
     {
         $contact = ContactForm::find($id);
 
-        switch ($contact->gender) {
-            case 0:
-                $contact->gender = '男性';
-                break;
-            case 1:
-                $contact->gender = '女性';
-                break;
-        }
-        switch ($contact->age) {
-            case 1:
-                $contact->age = "~19歳";
-                break;
-            case 2:
-                $contact->age = "19歳~29歳";
-                break;
-            case 3:
-                $contact->age = "29歳~39歳";
-                break;
-            case 4:
-                $contact->age = "39歳~49歳";
-                break;
-            case 5:
-                $contact->age = "49歳~59歳";
-                break;
-            case 6:
-                $contact->age = "60歳~";
-                break;
-        }
+        CheckFormData::checkGender($contact);
+        CheckFormData::checkAge($contact);
 
         return view('contact.show', compact('contact'));
     }

@@ -68,7 +68,7 @@ return [
     'numeric'              => ':attributeには数値を指定してください。',
     'present'              => ':attributeには現在時刻を指定してください。',
     'regex'                => '正しい形式の:attributeを指定してください。',
-    'required'             => ':attributeは必須です。',
+    'required'             => ':attributeを入力してください。',
     'required_if'          => ':otherが:valueの時:attributeは必須です。',
     'required_unless'      => ':otherが:values以外の時:attributeは必須です。',
     'required_with'        => ':valuesのうちいずれかが指定された時:attributeは必須です。',
@@ -120,7 +120,14 @@ return [
         'name' => '名前',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
-        'password-confirm' => 'パスワード確認用'
+        'password-confirm' => 'パスワード確認用',
+
+        'age' => '年齢',
+        'gender' => '性別',
+        'url' => 'ホームページ',
+        'title' => 'タイトル',
+        'content' => 'お問合せ内容',
+        'caution' => '注意事項',
     ],
 
 ];

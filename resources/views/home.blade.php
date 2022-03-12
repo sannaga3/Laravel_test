@@ -16,6 +16,7 @@
 
                     {{ __('You are logged in!') }}
                 </div>
+                <a href="{{ route('contact.index') }}" class="btn btn-primary mt-2">お問合せ一覧</a>
             </div>
         </div>
     </div>
