@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ContactFormController;
+use App\Http\Controllers\ShopController;
 use GuzzleHttp\Middleware;
 
 /*
@@ -24,6 +25,7 @@ use GuzzleHttp\Middleware;
 Route::get('tests/test', [TestController::class, 'index']);
 // Route::resource('contacts', ContactFormController::class)->only(['index', 'show']);
 // Route::resource('contacts', ContactFormController::class);
+
 Route::group(['prefix' => 'contact', 'middleware' => 'auth'], function() {
     Route::get('index', [ContactFormController::class, 'index' ])->name('contact.index');
     Route::get('create', [ContactFormController::class, 'create' ])->name('contact.create');
@@ -37,3 +39,5 @@ Route::group(['prefix' => 'contact', 'middleware' => 'auth'], function() {
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('shop/index', [ShopController::class, 'index'])->name('shop.index');
